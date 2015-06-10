@@ -155,7 +155,7 @@ Web = Syro.new(WebDeck) do
 
         jobs << { text: text, date: date.utc }
       end
-    end
+    end if session[:jobs]
 
     jobs = jobs.sort_by { |j| j.fetch(:date) }
 
