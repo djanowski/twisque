@@ -43,6 +43,14 @@ class WebDeck < Syro::Deck
 end
 
 Web = Syro.new(WebDeck) do
+  res["Content-Security-Policy"]           = "default-src 'self' style-src 'self' 'unsafe-inline'"
+  res["Strict-Transport-Security"]         = "max-age=63072000; includeSubdomains; preload"
+  res["X-Content-Type-Options"]            = "nosniff"
+  res["X-Download-Options"]                = "noopen"
+  res["X-Frame-Options"]                   = "deny"
+  res["X-Permitted-Cross-Domain-Policies"] = "none"
+  res["X-XSS-Protection"]                  = "1; mode=block"
+
   post {
     delay = Integer(req.POST["delay"])
 
