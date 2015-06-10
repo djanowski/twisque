@@ -119,6 +119,20 @@
     color: #999;
     font-size: 0.9rem;
   }
+
+  .site-footer {
+    border-top: 1px solid #ddd;
+    color: #999;
+    font-size: 0.8rem;
+    margin: 3rem 0;
+    padding: 1.5rem 0 0 0;
+    text-align: center;
+  }
+
+  .site-footer a {
+    color: #999;
+    text-decoration: underline;
+  }
 </style>
 
 <body>
@@ -129,6 +143,11 @@
     % end
 
     {{! content }}
+
+    <div class=site-footer>
+      © 2015 Damian Janowski.
+      <a href='https://github.com/djanowski/twisque'>Source code</a>
+    </div>
   </div>
 
 </body>
