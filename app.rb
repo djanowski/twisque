@@ -51,6 +51,8 @@ class WebDeck < Syro::Deck
     }
 
     $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
+
+    session[:notice] = sprintf("Done! Your tweet will be published in approximately %s seconds.", delay)
   end
 
   def redirect_to_twitter

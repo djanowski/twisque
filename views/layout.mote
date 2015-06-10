@@ -83,11 +83,21 @@
     text-align: right;
     margin-right: 0.5rem;
   }
+
+  .notice {
+    border-bottom: 2px solid #469ced;
+    color: #469ced;
+    padding: 1.5rem 0;
+  }
 </style>
 
 <body>
 
   <div class=site-container>
+    % if notice = app.session.delete(:notice)
+      <div class=notice>{{ notice }}</div>
+    % end
+
     {{! content }}
   </div>
 
