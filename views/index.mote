@@ -15,6 +15,20 @@
     <input name=delay id=tweet-delay type=text size=4 class=tweet-delay-input value=60> seconds
   </div>
 
+  <div class=form-disclaimer>
+    % if app.session[:user_id]
+      Tweeting as {{ app.session[:screen_name] }}.
+    % else
+      You will be asked to sign in with Twitter.
+      <br>
+      We <b>do not store</b> any access tokens after posting your tweets.
+      <br>
+      For your convenience, we save the access tokens in an encrypted cookie
+      so you can use the service repeatedly. However, these are stored in your
+      computer and can't be accessed by anyone else.
+    % end
+  </div>
+
   <button type=submit>Tweet later</button>
 </form>
 

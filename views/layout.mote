@@ -55,6 +55,13 @@
     margin: 1.5rem 0;
   }
 
+  .form-disclaimer {
+    color: #777;
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
   button {
     position: relative;
     vertical-align: top;
