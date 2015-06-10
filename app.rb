@@ -40,6 +40,33 @@ class WebDeck < Syro::Deck
   def session
     env["rack.session"]
   end
+
+  def enqueue_tweet(text:, delay:)
+    job = {
+      text:        text,
+      screen_name: session.fetch(:screen_name),
+
+      oauth_token:        session.fetch(:oauth_token),
+      oauth_token_secret: session.fetch(:oauth_secret),
+    }
+
+    $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
+  end
+
+  def redirect_to_twitter
+    response = $twitter.request(
+      "POST", "/oauth/request_token",
+      body: { oauth_callback: URI.join(req.url, "/callback").to_s }
+    )
+    response = Rack::Utils.parse_query(response.body)
+
+    session[:oauth_token]  = response.fetch("oauth_token")
+    session[:oauth_secret] = response.fetch("oauth_token_secret")
+
+    query = Rack::Utils.build_query(oauth_token: response.fetch("oauth_token"))
+
+    res.redirect(sprintf("https://api.twitter.com/oauth/authenticate?%s", query))
+  end
 end
 
 Web = Syro.new(WebDeck) do
@@ -52,19 +79,18 @@ Web = Syro.new(WebDeck) do
   res["X-XSS-Protection"]                  = "1; mode=block"
 
   post {
-    delay = Integer(req.POST["delay"])
-
-    job = {
-      text:        req.POST["text"],
-      screen_name: session.fetch(:screen_name),
-
-      oauth_token:        session.fetch(:oauth_token),
-      oauth_token_secret: session.fetch(:oauth_secret),
+    tweet = {
+      text:  req.POST["text"],
+      delay: Integer(req.POST["delay"])
     }
 
-    $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
-
-    res.redirect("/")
+    if session[:user_id]
+      enqueue_tweet(tweet)
+      res.redirect("/")
+    else
+      session[:tweet] = tweet
+      redirect_to_twitter
+    end
   }
 
   on("callback") {
@@ -82,11 +108,17 @@ Web = Syro.new(WebDeck) do
         )
         response = Rack::Utils.parse_query(response.body)
 
+        tweet = session[:tweet]
+
         session.clear
         session[:oauth_token]  = response.fetch("oauth_token")
         session[:oauth_secret] = response.fetch("oauth_token_secret")
         session[:user_id]      = response.fetch("user_id")
         session[:screen_name]  = response.fetch("screen_name")
+
+        if tweet
+          enqueue_tweet(tweet)
+        end
 
         res.redirect("/")
       rescue Client::Error
@@ -97,17 +129,8 @@ Web = Syro.new(WebDeck) do
 
   on("login") {
     get {
-      response = $twitter.request(
-        "POST", "/oauth/request_token",
-        body: { oauth_callback: URI.join(req.url, "/callback").to_s }
-      )
-      response = Rack::Utils.parse_query(response.body)
-
       session.clear
-      session[:oauth_token]  = response.fetch("oauth_token")
-      session[:oauth_secret] = response.fetch("oauth_token_secret")
-
-      res.redirect("https://api.twitter.com/oauth/authenticate?" + Rack::Utils.build_query(oauth_token: response.fetch("oauth_token")))
+      redirect_to_twitter
     }
   }
 
