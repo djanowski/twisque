@@ -139,6 +139,13 @@ Web = Syro.new(WebDeck) do
     }
   }
 
+  on("logout") {
+    get {
+      session.clear
+      res.redirect("/")
+    }
+  }
+
   get {
     jobs = []
 

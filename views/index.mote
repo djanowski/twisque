@@ -18,6 +18,7 @@
   <div class=form-disclaimer>
     % if app.session[:user_id]
       Tweeting as {{ app.session[:screen_name] }}.
+      <a href='/logout'>Forget me</a>
     % else
       You will be asked to sign in with Twitter.
       <br>
