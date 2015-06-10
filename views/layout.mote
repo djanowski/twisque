@@ -124,9 +124,9 @@
     border-top: 1px solid #ddd;
     color: #999;
     font-size: 0.8rem;
+    line-height: 1.2rem;
     margin: 3rem 0;
     padding: 1.5rem 0 0 0;
-    text-align: center;
   }
 
   .site-footer a {
@@ -145,8 +145,24 @@
     {{! content }}
 
     <div class=site-footer>
+      This experiment uses Ruby and
+      <a href='https://github.com/antirez/disque'>Disque</a>
+      for background processing.
+      <br>
+      It is deployed to Heroku using the
+      <a href='https://twitter.com/soveran/status/607957537011429376'>Tynd Disque add-on</a>.
+      <br>
+      The source code is available on
+      <a href='https://github.com/djanowski/twisque'>GitHub</a>.
+
+      <br>
+      <br>
+      Disclaimer: This is just an experiment.
+      Don't rely on this service to post critical updates to Twitter.
+      <br>
+      <br>
+
       © 2015 Damian Janowski.
-      <a href='https://github.com/djanowski/twisque'>Source code</a>
     </div>
   </div>
 
