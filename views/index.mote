@@ -1,0 +1,19 @@
+<form action=/ method=post class=post-form>
+  <div class=form-control>
+    <label for=tweet-text>
+      Tweet
+    </label>
+
+    <textarea name=text id=tweet-text autofocus></textarea>
+  </div>
+
+  <div class=form-control>
+    <label for=tweet-delay>
+      Delay
+    </label>
+
+    <input name=delay id=tweet-delay type=text size=4 class=tweet-delay-input value=60> seconds
+  </div>
+
+  <button type=submit>Tweet later</button>
+</form>
