@@ -17,3 +17,20 @@
 
   <button type=submit>Tweet later</button>
 </form>
+
+% if jobs.size > 0
+  <div class=tweets>
+    <h2>Your pending tweets</h2>
+
+    <ul>
+      % jobs.each do |job|
+        <li>
+          <span class=text>
+            {{ job.fetch(:text) }}
+          </span>
+          <span class=date>~ {{ job.fetch(:date).iso8601 }}</span>
+        </li>
+      % end
+    </ul>
+  </div>
+% end

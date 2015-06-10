@@ -50,9 +50,10 @@ class WebDeck < Syro::Deck
       oauth_token_secret: session.fetch(:oauth_secret),
     }
 
-    $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
+    id = $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
 
     session[:notice] = sprintf("Done! Your tweet will be published in approximately %s seconds.", delay)
+    session[:jobs] << id
   end
 
   def redirect_to_twitter
@@ -79,6 +80,8 @@ Web = Syro.new(WebDeck) do
   res["X-Frame-Options"]                   = "deny"
   res["X-Permitted-Cross-Domain-Policies"] = "none"
   res["X-XSS-Protection"]                  = "1; mode=block"
+
+  session[:jobs] ||= []
 
   post {
     tweet = {
@@ -137,6 +140,25 @@ Web = Syro.new(WebDeck) do
   }
 
   get {
-    render("index")
+    jobs = []
+
+    session[:jobs].dup.each do |id|
+      job = Hash[*$disque.call("SHOW", id)]
+
+      if job.empty?
+        session[:jobs].delete(id)
+      else
+      puts job.fetch("state")
+        text = JSON.parse(job.fetch("body")).fetch("text")
+
+        date = Time.at(job.fetch("ctime") / 1_000_000_000) + job.fetch("delay")
+
+        jobs << { text: text, date: date.utc }
+      end
+    end
+
+    jobs = jobs.sort_by { |j| j.fetch(:date) }
+
+    render("index", jobs: jobs)
   }
 end
