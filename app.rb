@@ -53,6 +53,8 @@ class WebDeck < Syro::Deck
     id = $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
 
     session[:notice] = sprintf("Done! Your tweet will be published in approximately %s seconds.", delay)
+
+    session[:jobs] ||= []
     session[:jobs] << id
   end
 
@@ -80,8 +82,6 @@ Web = Syro.new(WebDeck) do
   res["X-Frame-Options"]                   = "deny"
   res["X-Permitted-Cross-Domain-Policies"] = "none"
   res["X-XSS-Protection"]                  = "1; mode=block"
-
-  session[:jobs] ||= []
 
   post {
     tweet = {
