@@ -1,46 +1,20 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.3.8)
-    buftok (0.2.0)
     disque (0.0.6)
       redic (~> 1.5.0)
-    equalizer (0.0.11)
-    faraday (0.9.1)
-      multipart-post (>= 1.2, < 3)
     hache (1.1.0)
     hiredis (0.6.0)
     hmote (1.2.0)
       hache
-    http (0.6.4)
-      http_parser.rb (~> 0.6.0)
-    http_parser.rb (0.6.0)
-    json (1.8.3)
-    memoizable (0.4.2)
-      thread_safe (~> 0.3, >= 0.3.1)
-    multipart-post (2.0.0)
-    naught (1.0.0)
     net-http-persistent (2.9.4)
     rack (1.6.1)
     redic (1.5.0)
       hiredis
     seg (0.0.1)
-    simple_oauth (0.3.1)
     syro (0.0.6)
       rack (~> 1.6.0)
       seg
-    thread_safe (0.3.5)
-    twitter (5.14.0)
-      addressable (~> 2.3)
-      buftok (~> 0.2.0)
-      equalizer (~> 0.0.9)
-      faraday (~> 0.9.0)
-      http (~> 0.6.0)
-      http_parser.rb (~> 0.6.0)
-      json (~> 1.8)
-      memoizable (~> 0.4.0)
-      naught (~> 1.0)
-      simple_oauth (~> 0.3.0)
 
 PLATFORMS
   ruby
@@ -50,7 +24,6 @@ DEPENDENCIES
   hmote
   net-http-persistent
   syro
-  twitter
 
 BUNDLED WITH
    1.10.3

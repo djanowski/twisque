@@ -1,7 +1,6 @@
-require "syro"
-require "twitter"
-require "hmote"
 require "disque"
+require "hmote"
+require "syro"
 
 require_relative "lib/client"
 
