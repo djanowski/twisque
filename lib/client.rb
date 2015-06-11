@@ -8,7 +8,7 @@ class Client
     @key = key
     @secret = secret
     @endpoint = endpoint
-    @http = Net::HTTP::Persistent.new("twitter")
+    @http = Net::HTTP::Persistent.new
   end
 
   def request(method, path, body: {}, oauth: {})
