@@ -51,6 +51,15 @@
     margin: 0.7rem 0;
   }
 
+  .post-form .tweet-count {
+    color: #999;
+    font-size: 0.8rem;
+  }
+
+  .post-form .tweet-count.error {
+    color: #df3f3f;
+  }
+
   .form-control {
     margin: 1.5rem 0;
   }

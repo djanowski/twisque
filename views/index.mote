@@ -2,9 +2,13 @@
   <div class=form-control>
     <label for=tweet-text>
       Tweet
+
+      <span class='tweet-count js-tweet-count'>
+      </span>
     </label>
 
-    <textarea name=text id=tweet-text autofocus></textarea>
+    <textarea name=text id=tweet-text autofocus onkeyup='updateCount(this)'></textarea>
+
   </div>
 
   <div class=form-control>
@@ -52,3 +56,38 @@
     </ul>
   </div>
 % end
+
+<script>
+  var URL   = /\b(?:([a-z][\w-]+:\/\/)|www\.)[^\s]+/gi;
+  var HTTPS = /^https/;
+
+  function count(str) {
+    var length = unescape(encodeURIComponent(str)).length;
+
+    var urls = str.match(URL);
+
+    if (urls) {
+      for (var i = 0, l = urls.length; i < l; i++) {
+        var url = urls[i].replace(/[,\.]$/, '');
+
+        length = length - url.length + (url.match(HTTPS) ? 23 : 22);
+      }
+    }
+
+    return length;
+  }
+
+  function updateCount(textarea) {
+    var remaining = 140 - count(textarea.value);
+    var el = document.querySelector('.js-tweet-count');
+
+    if (remaining > 0) {
+      el.innerText = '~' + remaining + ' chars left.';
+      el.classList.remove('error');
+    }
+    else {
+      el.innerText = '~' + Math.abs(remaining) + ' extra chars.';
+      el.classList.add('error');
+    }
+  }
+</script>
