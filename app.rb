@@ -1,5 +1,6 @@
 require "disque"
 require "hmote"
+require "json"
 require "syro"
 
 require_relative "lib/client"
