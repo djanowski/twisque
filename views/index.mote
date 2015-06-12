@@ -43,7 +43,10 @@
           <span class=text>
             {{ job.fetch(:text) }}
           </span>
-          <span class=date>~ {{ job.fetch(:date).iso8601 }}</span>
+          <div class=status>
+            ~ {{ job.fetch(:date).iso8601 }}
+            <a href='/cancel/{{ job.fetch(:id) }}' onclick='return confirm("You sure you want to cancel this scheduled tweet?")'>Cancel</a>
+          </div>
         </li>
       % end
     </ul>

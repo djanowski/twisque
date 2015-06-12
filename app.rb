@@ -146,6 +146,21 @@ Web = Syro.new(WebDeck) do
     }
   }
 
+  on("cancel") {
+    on(:id) {
+      if session[:jobs].nil? || !session[:jobs].include?(inbox[:id])
+        res.redirect("/")
+        halt(res.finish)
+      end
+
+      $disque.call("DELJOB", inbox[:id])
+
+      session[:notice] = "The tweet was cancelled. Phew, just in time."
+
+      res.redirect("/")
+    }
+  }
+
   get {
     jobs = []
 
@@ -155,12 +170,11 @@ Web = Syro.new(WebDeck) do
       if job.empty?
         session[:jobs].delete(id)
       else
-      puts job.fetch("state")
         text = JSON.parse(job.fetch("body")).fetch("text")
 
         date = Time.at(job.fetch("ctime") / 1_000_000_000) + job.fetch("delay")
 
-        jobs << { text: text, date: date.utc }
+        jobs << { id: job.fetch("id"), text: text, date: date.utc }
       end
     end if session[:jobs]
 

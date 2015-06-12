@@ -120,11 +120,16 @@
 
   .tweets .text {
     display: block;
+    margin: 0 0 0.3rem 0;
   }
 
-  .tweets .date {
+  .tweets .status {
     color: #999;
     font-size: 0.9rem;
+  }
+
+  .tweets .status a {
+    color: #999;
   }
 
   .site-footer {
