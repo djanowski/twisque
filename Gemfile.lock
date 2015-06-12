@@ -12,6 +12,7 @@ GEM
     redic (1.5.0)
       hiredis
     seg (0.0.1)
+    simple_oauth (0.3.1)
     syro (0.0.6)
       rack (~> 1.6.0)
       seg
@@ -23,6 +24,7 @@ DEPENDENCIES
   disque
   hmote
   net-http-persistent
+  simple_oauth
   syro
 
 BUNDLED WITH
