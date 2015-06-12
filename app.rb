@@ -5,6 +5,8 @@ require "syro"
 
 require_relative "lib/client"
 
+HTTPS_ENABLED = ENV.fetch("RACK_ENV") == "production"
+
 $disque = Disque.new(ENV.fetch("TYND_DISQUE_NODES"), auth: ENV.fetch("TYND_DISQUE_AUTH"))
 
 $twitter = Client.new(
@@ -72,16 +74,28 @@ class WebDeck < Syro::Deck
 
     res.redirect(sprintf("https://api.twitter.com/oauth/authenticate?%s", query))
   end
+
+  def check_https
+    if HTTPS_ENABLED && !req.ssl?
+      res.redirect("https://#{req.host}#{req.fullpath}")
+      halt(res.finish)
+    end
+  end
+
+  def set_security_headers
+    res["Content-Security-Policy"]           = "default-src 'self' style-src 'self' 'unsafe-inline'"
+    res["Strict-Transport-Security"]         = "max-age=63072000; includeSubdomains; preload"
+    res["X-Content-Type-Options"]            = "nosniff"
+    res["X-Download-Options"]                = "noopen"
+    res["X-Frame-Options"]                   = "deny"
+    res["X-Permitted-Cross-Domain-Policies"] = "none"
+    res["X-XSS-Protection"]                  = "1; mode=block"
+  end
 end
 
 Web = Syro.new(WebDeck) do
-  res["Content-Security-Policy"]           = "default-src 'self' style-src 'self' 'unsafe-inline'"
-  res["Strict-Transport-Security"]         = "max-age=63072000; includeSubdomains; preload"
-  res["X-Content-Type-Options"]            = "nosniff"
-  res["X-Download-Options"]                = "noopen"
-  res["X-Frame-Options"]                   = "deny"
-  res["X-Permitted-Cross-Domain-Policies"] = "none"
-  res["X-XSS-Protection"]                  = "1; mode=block"
+  set_security_headers
+  check_https
 
   post {
     tweet = {
