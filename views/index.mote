@@ -9,6 +9,12 @@
 
     <textarea name=text id=tweet-text autofocus onkeyup='updateCount(this)'></textarea>
 
+    % if !app.session[:user_id]
+      <div class=form-disclaimer>
+        Just trying this out? Tweet to @foobarbaz. Your followers won't see it.
+      </div>
+    % end
+
   </div>
 
   <div class=form-control>
@@ -19,7 +25,7 @@
     <input name=delay id=tweet-delay type=text size=4 class=tweet-delay-input value=60> seconds
   </div>
 
-  <div class=form-disclaimer>
+  <div class='form-disclaimer login-disclaimer'>
     % if app.session[:user_id]
       Tweeting as {{ app.session[:screen_name] }}.
       <a href='/logout'>Forget me</a>

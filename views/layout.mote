@@ -68,6 +68,10 @@
     color: #777;
     font-size: 0.8rem;
     line-height: 1.2rem;
+    margin: 0.3rem 0;
+  }
+
+  .login-disclaimer {
     margin: 1.5rem 0;
   }
 
