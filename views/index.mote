@@ -25,6 +25,8 @@
     <input name=delay id=tweet-delay type=text size=4 class=tweet-delay-input value=60> seconds
   </div>
 
+  <button type=submit>Tweet later</button>
+
   <div class='form-disclaimer login-disclaimer'>
     % if app.session[:user_id]
       Tweeting as {{ app.session[:screen_name] }}.
@@ -39,8 +41,6 @@
       computer and can't be accessed by anyone else.
     % end
   </div>
-
-  <button type=submit>Tweet later</button>
 </form>
 
 % if jobs.size > 0
