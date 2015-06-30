@@ -171,7 +171,7 @@
       for background processing.
       <br>
       It is deployed to Heroku using the
-      <a href='https://twitter.com/soveran/status/607957537011429376'>Tynd Disque add-on</a>.
+      <a href='https://addons.heroku.com/tynd'>Tynd Disque add-on</a>.
       <br>
       The source code is available on
       <a href='https://github.com/djanowski/twisque'>GitHub</a>.
