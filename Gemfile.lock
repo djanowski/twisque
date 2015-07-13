@@ -7,8 +7,10 @@ GEM
     hiredis (0.6.0)
     hmote (1.2.0)
       hache
+    kgio (2.9.3)
     net-http-persistent (2.9.4)
     rack (1.6.1)
+    raindrops (0.14.0)
     redic (1.5.0)
       hiredis
     seg (0.0.1)
@@ -16,6 +18,10 @@ GEM
     syro (0.0.6)
       rack (~> 1.6.0)
       seg
+    unicorn (4.9.0)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
 
 PLATFORMS
   ruby
@@ -26,6 +32,7 @@ DEPENDENCIES
   net-http-persistent
   simple_oauth
   syro
+  unicorn
 
 BUNDLED WITH
    1.10.3
