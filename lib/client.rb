@@ -4,6 +4,15 @@ require "simple_oauth"
 class Client
   Error = Class.new(RuntimeError)
 
+  class Error < RuntimeError
+    attr :response
+
+    def initialize(res)
+      @response = res
+      super("#{res.class} (#{res.code}): #{res.body}")
+    end
+  end
+
   def initialize(key:, secret:, endpoint:)
     @key = key
     @secret = secret
@@ -28,7 +37,7 @@ class Client
     res = @http.request(uri, req)
 
     if Integer(res.code) / 100 > 3
-      raise Error, "#{res.class} (#{res.code}): #{res.body}"
+      raise Error.new(res)
     end
 
     res
