@@ -1,11 +1,15 @@
 require "disque"
+require "havanna"
 require "hmote"
 require "json"
 require "syro"
 
 require_relative "lib/client"
+require_relative "workers/tweets"
 
 HTTPS_ENABLED = ENV.fetch("RACK_ENV") == "production"
+
+Havanna.connect(ENV.fetch("TYND_DISQUE_NODES"), auth: ENV.fetch("TYND_DISQUE_AUTH"))
 
 $disque = Disque.new(ENV.fetch("TYND_DISQUE_NODES"), auth: ENV.fetch("TYND_DISQUE_AUTH"))
 
@@ -52,7 +56,7 @@ class WebDeck < Syro::Deck
       oauth_token_secret: session.fetch(:oauth_secret),
     }
 
-    id = $disque.push("tweets", job.to_json, 0, delay: delay, retry: 30)
+    id = Havanna.push(Tweets, job.to_json, 0, delay: delay, retry: 30)
 
     session[:notice] = sprintf("Done! Your tweet will be published in approximately %s seconds.", delay)
 

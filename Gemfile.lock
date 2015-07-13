@@ -1,9 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    clap (1.0.0)
     disque (0.0.6)
       redic (~> 1.5.0)
     hache (1.1.0)
+    havanna (1.0.0)
+      clap
+      disque
     hiredis (0.6.0)
     hmote (1.2.0)
       hache
@@ -28,6 +32,7 @@ PLATFORMS
 
 DEPENDENCIES
   disque
+  havanna
   hmote
   net-http-persistent
   simple_oauth
